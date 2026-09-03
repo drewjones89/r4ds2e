@@ -1,0 +1,9 @@
+---
+title: "Chapter 1: Data Visualization"
+format: html
+---
+
+
+```{r}
+library(tidyverse)
+```
