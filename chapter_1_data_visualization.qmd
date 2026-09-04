@@ -3,7 +3,29 @@ title: "Chapter 1: Data Visualization"
 format: html
 ---
 
-
 ```{r}
 library(tidyverse)
+library(palmerpenguins)
 ```
+
+```{r}
+glimpse(penguins)
+```
+
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(
+    x = flipper_length_mm,
+    y = body_mass_g
+  )
+) +
+  geom_point()
+```
+
+```{r}
+ggplot(
+    data = pengui
+)
+```
+
