@@ -25,7 +25,7 @@ ggplot(
 
 ```{r}
 ggplot(
-    data = pengui
+    data = penguin
 )
 ```
 
