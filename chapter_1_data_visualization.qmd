@@ -7,7 +7,7 @@ execute:
   echo: false
 ---
 
-#### Intro Data Viz 1.1
+#### Intro to Data Viz
 The book begins with a basic description of data Science as a process. The core of it is what Wickham calls "an iterative cycle of **transforming**, **viziualizing**, and **modeling**." This is preceeded by **importing**, and then **tidying** data (*tidy format: columns are variables and rows are observations*). Once a point of understanding is reached in the core process, your findings are **communicated**. 
 
 He also communicates that **tidying** and **transforming** have a relationship that, as a joint action, are called **wrangling**. 
@@ -15,7 +15,7 @@ He also communicates that **tidying** and **transforming** have a relationship t
 Another concept is the difference between a **dataframe** and was in colloquially called a "dataset". Essentially, a **dataframe** is one spreadsheet. A dataset may be an excel sheet with tabs. Each of those tabs is a **dataframe**. 
 
 <!-- 1.2.1 -->
-```{r}
+```{r penguins}
 library(palmerpenguins)
 # palmerpenguins is a dataset stored in an R package
 # It is also probably the most widely used dataset in R for examples, development, and teaching
@@ -29,7 +29,7 @@ library(tidyverse)
 
 <!-- 1.2.2 -->
 
-```{r}
+```{r glimpse}
 #| echo: true
 glimpse(penguins)
 ```
@@ -44,6 +44,8 @@ The `penguins` dataframe comes from the `palmerpenguins` package. It is tidy out
 To make a scatterplot, you set up a ggplot and stick a geom_point() on top it. 
 
 ```{r}
+#| label: fig-scatter-basic
+#| fig-cap: ""
 ggplot( # Written this way, I interpret the basics of a ggplot as settings in the `ggplot()` command. 
   data = penguins,
   mapping = aes(x = flipper_length_mm, y = body_mass_g))  +  # at this point, there is a "live" ggplot seed
@@ -65,10 +67,12 @@ This basic scatterplot works, but it looks terrible. The fun of R is the granula
 The book dips the readers' toe into things by showing them labels, color and shape customization, and how to vizualize a 2 factor linear model, in the form of a trend line (with degrees of freedom to boot.)
 
 
-```{r}
+```{r ggthemes}
 library(ggthemes)
 ```
 ```{r}
+#| label: fig-scatter-book
+#| fig-cap: ""
 ggplot(
   data = penguins,
   mapping = aes(x = flipper_length_mm, y = body_mass_g)
@@ -84,9 +88,11 @@ ggplot(
   scale_color_colorblind()
 ```
 
-But I have a lot of problems with this admittedly improved plot
+But I have a lot of problems with this admittedly improved plot. mapping species to both color and shape is redundant. 
 
 ```{r}
+#| label: fig-scatter-refined
+#| fig-cap: ""
 penguins |> # my preferred way of writing ggplots is to start with the dataframe and pipe it into ggplot. I think of it as "plot of penguins" like this, instead of "plot made of penguins".
     ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
     geom_point(mapping = aes(color = species),
@@ -123,3 +129,166 @@ I also feel that pretty much all default R settings for graphics are too small. 
 For the `geom_line()`, I removed the SE band around the actual model. If I am not talking about a model I actually put work into, then it doesn't need to be there. I also made it black and extended it to the edges defined by `theme_few()`
 
 Another piece of making vizualizations that are actually interesting is in better labeling. The title of the plot, if it has one, should highlight the most important finding. Here, the title points out that gentoos are distinctly bigger than the other two species. 
+
+
+<!-- Visualizing Distributions 1.4 -->
+
+
+
+The book moves into the second part of the first chapter with a discussion of **distribution**. Bar charts are used to show how redundant visual motifs can be used to keep coherence in a piece of writing. The bars do not need to be colored in the magma palette, but after the earlier scatterplots, one should try to keep visual themes consistent. Once Gentoo is defined as orange, it should stay that way. 
+
+```{r}
+#| label: fig-bar-species
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = species)) +
+  geom_bar(aes(fill = species)) +
+  scale_fill_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  labs(
+    x = "Species",
+    y = "Count",
+    title = "Adelie is the most widespread species",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
+  theme_few() +
+  theme(
+    axis.title = element_text(size = rel(1.25)),
+    axis.text  = element_text(size = rel(1.25)),
+    legend.position = "none" # species is already labeled on the x-axis
+  )
+```
+
+Traditional statistics would tell you that a histogram like this is a useful way of showing distribution of a variable such as body mass.
+
+```{r}
+#| label: fig-histogram-mass
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = body_mass_g)) +
+  geom_histogram(binwidth = 200, fill = viridis::magma(1, begin = 0.5)) +
+  labs(
+    x = "Body Mass (g)",
+    y = "Count",
+    title = "Body mass has a slight bimodal shape",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_x_continuous(expand = expansion(mult = 0.02)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
+  theme_few() +
+  theme(
+    axis.title = element_text(size = rel(1.25)),
+    axis.text  = element_text(size = rel(1.25))
+  )
+```
+
+however, I think in almost all cases, audiences would prefer to see a density plot. 
+
+```{r}
+#| label: fig-density-mass
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = body_mass_g, color = species, fill = species)) +
+  geom_density(aes(y = after_stat(count)), alpha = 0.3) +
+  scale_color_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  scale_fill_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  labs(
+    x = "Body Mass (g)",
+    y = "Count",
+    color = "Species",
+    fill = "Species",
+    title = "Gentoos are distinctly heavier than the other two species",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_x_continuous(expand = expansion(mult = 0.02)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.02))) +
+  theme_few() +
+  theme(
+    axis.title  = element_text(size = rel(1.25)),
+    axis.text   = element_text(size = rel(1.25)),
+    legend.title = element_text(size = rel(1.25)),
+    legend.text  = element_text(size = rel(1.25))
+  )
+```
+
+#### Visualizing Relationships 1.5
+
+##### Numerical and Categorical 1.5.1
+
+A boxplot summarizes a numerical variable across categories. The box spans the middle 50% of the data (IQR), the line is the median, and the whiskers extend to 1.5× the IQR. Points beyond that are plotted individually as potential outliers.
+
+```{r}
+#| label: fig-boxplot-mass
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = species, y = body_mass_g)) +
+  geom_boxplot(aes(fill = species)) +
+  scale_fill_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  labs(
+    x = "Species",
+    y = "Body Mass (g)",
+    title = "Gentoos are dramatically heavier than Adelie and Chinstrap",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_y_continuous(labels = scales::label_number(),
+                     expand = expansion(mult = 0.02)) +
+  theme_few() +
+  theme(
+    axis.title = element_text(size = rel(1.25)),
+    axis.text  = element_text(size = rel(1.25)),
+    legend.position = "none" # species already on x-axis
+  )
+```
+
+##### Two Categorical Variables 1.5.2
+
+A stacked bar chart shows how two categorical variables relate. Using `position = "fill"` converts counts to proportions, making it easier to compare composition across groups regardless of group size.
+
+```{r}
+#| label: fig-bar-stacked
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = "fill") +
+  scale_fill_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  labs(
+    x = "Island",
+    y = "Proportion",
+    fill = "Species",
+    title = "Biscoe is dominated by Gentoos; Dream has no Gentoos at all",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_y_continuous(expand = expansion(0)) +
+  theme_few() +
+  theme(
+    axis.title  = element_text(size = rel(1.25)),
+    axis.text   = element_text(size = rel(1.25)),
+    legend.title = element_text(size = rel(1.25)),
+    legend.text  = element_text(size = rel(1.25))
+  )
+```
+
+##### Three or More Variables — Facets 1.5.4
+
+When you want to show the same plot broken out by a categorical variable, `facet_wrap()` creates a panel for each group. This avoids overplotting and makes comparisons easy.
+
+```{r}
+#| label: fig-facet-island
+#| fig-cap: ""
+penguins |>
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species), size = 3) +
+  facet_wrap(~island) +
+  scale_color_viridis_d(option = "magma", begin = 0.2, end = 0.8) +
+  labs(
+    x = "Flipper Length (mm)",
+    y = "Body Mass (g)",
+    color = "Species",
+    title = "Biscoe penguins span the widest range of sizes",
+    caption = "Source: palmerpenguins"
+  ) +
+  scale_x_continuous(expand = expansion(mult = 0.02)) +
+  scale_y_continuous(labels = scales::label_number(),
+                     expand = expansion(mult = 0.02)) +
+  theme_few() 
+```

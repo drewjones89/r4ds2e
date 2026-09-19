@@ -131,9 +131,14 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>To make a scatterplot, you set up a ggplot and stick a geom_point() on top it.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter_1_data_visualization_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-scatter-basic" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-basic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-scatter-basic-1.png" id="fig-scatter-basic" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scatter-basic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
 </figure>
 </div>
 </div>
@@ -149,19 +154,29 @@ That is because the penguins dataset has 2 missing values-->
 <p>The book dips the readers’ toe into things by showing them labels, color and shape customization, and how to vizualize a 2 factor linear model, in the form of a trend line (with degrees of freedom to boot.)</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter_1_data_visualization_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-scatter-book" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-book-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-scatter-book-1.png" id="fig-scatter-book" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scatter-book-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>But I have a lot of problems with this admittedly improved plot</p>
+<p>But I have a lot of problems with this admittedly improved plot. mapping species to both color and shape is redundant.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter_1_data_visualization_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-scatter-refined" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-refined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-scatter-refined-1.png" id="fig-scatter-refined" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scatter-refined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
 </figure>
 </div>
 </div>
@@ -171,6 +186,109 @@ That is because the penguins dataset has 2 missing values-->
 <p>I also feel that pretty much all default R settings for graphics are too small. When I think about communicating, I think of vizualizations as the stars of the show. For me, that means increasing the size of all text elements by 25% and setting sizes of <code>ggplot()</code> elements manually.</p>
 <p>For the <code>geom_line()</code>, I removed the SE band around the actual model. If I am not talking about a model I actually put work into, then it doesn’t need to be there. I also made it black and extended it to the edges defined by <code>theme_few()</code></p>
 <p>Another piece of making vizualizations that are actually interesting is in better labeling. The title of the plot, if it has one, should highlight the most important finding. Here, the title points out that gentoos are distinctly bigger than the other two species.</p>
+<!-- Visualizing Distributions 1.4 -->
+<p>The book moves into the second part of the first chapter with a discussion of <strong>distribution</strong>. Bar charts are used to show how redundant visual motifs can be used to keep coherence in a piece of writing. The bars do not need to be colored in the magma palette, but after the earlier scatterplots, one should try to keep visual themes consistent. Once Gentoo is defined as orange, it should stay that way.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-bar-species" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bar-species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-bar-species-1.png" id="fig-bar-species" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-bar-species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Traditional statistics would tell you that a histogram like this is a useful way of showing distribution of a variable such as body mass.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-histogram-mass" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histogram-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-histogram-mass-1.png" id="fig-histogram-mass" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-histogram-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>however, I think in almost all cases, audiences would prefer to see a density plot.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-density-mass" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-density-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-density-mass-1.png" id="fig-density-mass" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-density-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="visualizing-relationships-1.5" class="level4">
+<h4 class="anchored" data-anchor-id="visualizing-relationships-1.5">Visualizing Relationships 1.5</h4>
+<section id="numerical-and-categorical-1.5.1" class="level5">
+<h5 class="anchored" data-anchor-id="numerical-and-categorical-1.5.1">Numerical and Categorical 1.5.1</h5>
+<p>A boxplot summarizes a numerical variable across categories. The box spans the middle 50% of the data (IQR), the line is the median, and the whiskers extend to 1.5× the IQR. Points beyond that are plotted individually as potential outliers.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-boxplot-mass" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-boxplot-mass-1.png" id="fig-boxplot-mass" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-boxplot-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="two-categorical-variables-1.5.2" class="level5">
+<h5 class="anchored" data-anchor-id="two-categorical-variables-1.5.2">Two Categorical Variables 1.5.2</h5>
+<p>A stacked bar chart shows how two categorical variables relate. Using <code>position = "fill"</code> converts counts to proportions, making it easier to compare composition across groups regardless of group size.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-bar-stacked" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bar-stacked-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-bar-stacked-1.png" id="fig-bar-stacked" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-bar-stacked-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="three-or-more-variables-facets-1.5.4" class="level5">
+<h5 class="anchored" data-anchor-id="three-or-more-variables-facets-1.5.4">Three or More Variables — Facets 1.5.4</h5>
+<p>When you want to show the same plot broken out by a categorical variable, <code>facet_wrap()</code> creates a panel for each group. This avoids overplotting and makes comparisons easy.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-facet-island" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-facet-island-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="chapter_1_data_visualization_files/figure-html/fig-facet-island-1.png" id="fig-facet-island" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-facet-island-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 

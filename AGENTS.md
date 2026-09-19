@@ -17,6 +17,8 @@ Work in the local `r4ds2e-1` folder. To contribute to the org repo:
 - Stage → Commit → `...` menu → **Push to... → upstream**
 - Do NOT use "Sync Changes" (pushes to fork, not org repo)
 
+> **Easy to forget:** The push step is "Push to... → upstream", NOT the "Sync Changes" button.
+
 ## File Naming Convention
 
 One `.qmd` file per chapter, named: `chapter_N_topic.qmd`
