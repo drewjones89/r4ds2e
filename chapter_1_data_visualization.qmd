@@ -1,36 +1,125 @@
 ---
 title: "Chapter 1: Data Visualization"
 format: html
+execute:
+  warning: false
+  message: false
+  echo: false
 ---
 
+#### Intro Data Viz 1.1
+The book begins with a basic description of data Science as a process. The core of it is what Wickham calls "an iterative cycle of **transforming**, **viziualizing**, and **modeling**." This is preceeded by **importing**, and then **tidying** data (*tidy format: columns are variables and rows are observations*). Once a point of understanding is reached in the core process, your findings are **communicated**. 
+
+He also communicates that **tidying** and **transforming** have a relationship that, as a joint action, are called **wrangling**. 
+
+Another concept is the difference between a **dataframe** and was in colloquially called a "dataset". Essentially, a **dataframe** is one spreadsheet. A dataset may be an excel sheet with tabs. Each of those tabs is a **dataframe**. 
+
+<!-- 1.2.1 -->
 ```{r}
-library(tidyverse)
 library(palmerpenguins)
+# palmerpenguins is a dataset stored in an R package
+# It is also probably the most widely used dataset in R for examples, development, and teaching
+# comments can exist in chunks. I don't like showing code in knitted files. 
 ```
 
+```{r tidyverse}
+library(tidyverse)
+# tidyverse is most of the toolset for modern Data Science in R
+```
+
+<!-- 1.2.2 -->
+
 ```{r}
+#| echo: true
 glimpse(penguins)
 ```
 
+The `penguins` dataframe comes from the `palmerpenguins` package. It is tidy out-of-the-box.
+
+#### Types of Tables
+###### There's levels to this
+
+`ggplot()` is the TidyVerse command to start making a vizualization. If you enter the absolute basics of the ggplot() function you will get a blank slate. 
+
+To make a scatterplot, you set up a ggplot and stick a geom_point() on top it. 
+
+```{r}
+ggplot( # Written this way, I interpret the basics of a ggplot as settings in the `ggplot()` command. 
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g))  +  # at this point, there is a "live" ggplot seed
+  geom_point() # And then `geom_point()` interprets the ggplot seed in it's own way. 
+```
+
+
+<!-- This will spit out an error in the console:
+
+Removed 2 rows containing missing values or values outside the scale
+range (`geom_point()`).  
+
+That is because the penguins dataset has 2 missing values-->
+
+This basic scatterplot works, but it looks terrible. The fun of R is the granularity you have to create exactly what you want in a vizualization. 
+
+<!--  -->
+
+The book dips the readers' toe into things by showing them labels, color and shape customization, and how to vizualize a 2 factor linear model, in the form of a trend line (with degrees of freedom to boot.)
+
+
+```{r}
+library(ggthemes)
+```
 ```{r}
 ggplot(
   data = penguins,
-  mapping = aes(
-    x = flipper_length_mm,
-    y = body_mass_g
-  )
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
 ) +
-  geom_point()
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)", y = "Body mass (g)",
+    color = "Species", shape = "Species"
+  ) +
+  scale_color_colorblind()
 ```
+
+But I have a lot of problems with this admittedly improved plot
 
 ```{r}
-ggplot(
-    data = penguin, 
-    mapping = aes(
-      x = flipper_length_mm,
-      y = body_mass_g
+penguins |> # my preferred way of writing ggplots is to start with the dataframe and pipe it into ggplot. I think of it as "plot of penguins" like this, instead of "plot made of penguins".
+    ggplot(mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+    geom_point(mapping = aes(color = species),
+                             size = 3) + # set size of point manually
+    geom_smooth(method = "lm",
+                color = "black", 
+                se = FALSE, # Turn of standard error
+                fullrange = TRUE) + # aesthetic choice to make the line extand to the edge. 
+    scale_color_viridis_d(option = "magma", begin = 0.2, end = 0.8) + # my preferred viridis settings that I came to throught trial and error in the past. 
+    labs(
+        x = "Flipper Length (mm)",
+        y = "Body Mass (g)",
+        title = "Gentoos are huge", # description of a finding
+        caption = "Source: palmerpenguins" # always site source
+    ) +
+    scale_x_continuous(limits = c(171, 233), expand = expansion(0)) +
+    scale_y_continuous(labels = scales::label_number(),
+                       expand = expansion(mult = 0.02)) +
+    theme_few() +
+    theme(
+      axis.title = element_text(size = rel(1.25)),
+      axis.text = element_text(size = rel(1.25)),
+      legend.title = element_text(size = rel(1.25)),
+      legend.text = element_text(size = rel(1.25))
     )
-) +
-  geom_point()
 ```
 
+This plot fits my eye much better. One piece of advice I got in undergraduate R class was to always apply something from ggthemes(). My personal favorite is theme_few(), which gives a stark white plot with a black outline. 
+
+I like that the book advises people to default to using a colorblind-friendly color format. I personally perfer the "magmea" colorblind theme and with custom color ranges. 
+
+I also feel that pretty much all default R settings for graphics are too small. When I think about communicating, I think of vizualizations as the stars of the show. For me, that means increasing the size of all text elements by 25% and setting sizes of `ggplot()` elements manually.  
+
+For the `geom_line()`, I removed the SE band around the actual model. If I am not talking about a model I actually put work into, then it doesn't need to be there. I also made it black and extended it to the edges defined by `theme_few()`
+
+Another piece of making vizualizations that are actually interesting is in better labeling. The title of the plot, if it has one, should highlight the most important finding. Here, the title points out that gentoos are distinctly bigger than the other two species. 
