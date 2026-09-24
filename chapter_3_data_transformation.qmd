@@ -1,0 +1,46 @@
+---
+title: "Chapter 3: Data Transformation"
+format: html
+execute:
+  warning: false
+  message: false
+  echo: false
+---
+
+Why chapter 3 and not chapter 2? Because Chapter 2 doesn't have code that is needed for future reference. If you've never written markdown code, it is useful. 
+
+#### Primary lessons in Chapter 3
+To answer the questions you have, you may need to change the form of your data. This may mean converting it to tidy format, creating new variables, and other things. 
+
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+
+```{r}
+glimpse(flights)
+```
+
+One of the packages containted in the **Tidyverse** newtowrk is *Dplyr* (a play on pliers), which contains the most-used tools for *transforming* data. 
+
+```{r}
+# dplyr functions do take standard logical operators
+flights |> 
+  filter(dep_delay > 120) 
+```
+
+```{r}
+# %in% is used to check if an element is in a vector. In this case the vector is defined in the chunk itself as containing 1 or 2
+flights |> 
+  filter(month %in% c(1, 2))
+```
+
+```{r}
+# distinct() finds unique rows. Left alone, it will just spit out unique rows. You can also define variables to find unique  combos
+flights |> 
+  distinct(origin, dest)
+# this returns a two-column table of every combination of origin and destination that appears in the dataframe. 
+```
+
+
